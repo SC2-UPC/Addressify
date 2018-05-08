@@ -6,7 +6,10 @@
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
-.idea/
+.idea/workspace.xml
+/.idea
+/.idea/workspace.xml
+
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
