@@ -5,7 +5,7 @@ var Point = mongoose.model('Point');
 
 var order = mongoose.Schema({
     IdPoint: {type:Schema.ObjectId, ref: 'Point'},
-    kpub: { type : String },
+    kPub: { type : String },
     arrived: {type:Boolean,required : false},
 	delivered: {type:Boolean,required : false}
 },{collection:'orders'});

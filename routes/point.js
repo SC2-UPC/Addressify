@@ -1,28 +1,28 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var products = require('../controllers/order');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const point = require('../controllers/point');
 
 //GET REQUESTS
 //All the point
-router.get('/all',products.listAllProducts);
+router.get('/all', point.listAllPoints);
 //By id
-router.get('/byid',products.listAllProducts);
+router.get('/:pointId', point.listById);
 
 //POST REQUESTS
 //New
-router.post('/add', products.addProduct);
+router.post('/register', point.register);
 //Login
-router.post('/login', products.addProduct);
+router.post('/login', point.login);
 
 //UPDATE REQUESTS
 //Edit
-router.post('/:productId', md_auth.ensureAuth, products.updateProduct);
+router.post('/:pointId', point.update);
 
 
 //DELETE REQUESTS
 //By id
-router.delete('/:productId', md_auth.ensureAuth, products.deleteProduct);
+router.delete('/:pointId', point.delete);
 
 
 module.exports=router;

@@ -1,29 +1,30 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var products = require('../controllers/order');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const order = require('../controllers/order');
 
 //GET REQUESTS
 //All the orders
-router.get('/all',products.listAllProducts);
+router.get('/all', order.listAllOrders);
 //By id
-router.get('/byid',products.listAllProducts);
+router.get('/:orderId', order.listById);
+
 
 //POST REQUESTS
 //New
-router.post('/add', products.addProduct);
+router.post('/new', order.newOrder);
 
 
 //UPDATE REQUESTS
 //Arrived
-router.post('/:productId', products.updateProduct);
+router.post('/arrived', order.arrived);
 //Delivered
-router.post('/spec/:productId', products.addSpec);
+router.post('/delivered', order.delivered);
 
 
 //DELETE REQUESTS
 //Order by id
-router.delete('/:productId', products.deleteProduct);
+router.delete('/:orderId', order.delete);
 
 
 module.exports=router;
