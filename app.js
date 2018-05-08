@@ -1,15 +1,25 @@
-'use strict'
+'use strict';
 
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-var dotenv = require('dotenv');
+const dotenv = require('dotenv');
+const orderModel = require('./models/order');
+const pointModel = require('./models/point');
+const pointRoutes = require('./routes/point');
+const orderRoutes = require('./routes/order');
+const validator = require('express-validator');
+
 dotenv.load();
 
-var app = express();
+const app = express();
 app.use(logger('dev'));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+//Routes
+app.use('/order', orderRoutes);
+app.use('/point', pointRoutes);
 
 //connect the database
 DATABASE=process.env.DATABASE;
@@ -17,6 +27,8 @@ mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://' + DATABASE, { useMongoClient: true });
 console.log("Database connected");
 console.log('mongodb://' + DATABASE);
+
+
 
 //start server
 app.listen(3000);
