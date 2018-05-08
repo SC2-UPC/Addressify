@@ -5,11 +5,13 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
 const orderModel = require('./models/order');
 const pointModel = require('./models/point');
+const vendorModel = require('./models/vendor');
 const pointRoutes = require('./routes/point');
 const orderRoutes = require('./routes/order');
-const validator = require('express-validator');
+const vendorRoutes = require('./routes/vendor');
 
 dotenv.load();
 
@@ -20,6 +22,7 @@ app.use(bodyParser.json());
 //Routes
 app.use('/order', orderRoutes);
 app.use('/point', pointRoutes);
+app.use('/vendor', vendorRoutes);
 
 //connect the database
 DATABASE=process.env.DATABASE;
