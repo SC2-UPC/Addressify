@@ -5,15 +5,14 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-
+dotenv.load();
 const orderModel = require('./models/order');
 const pointModel = require('./models/point');
 const vendorModel = require('./models/vendor');
 const pointRoutes = require('./routes/point');
 const orderRoutes = require('./routes/order');
 const vendorRoutes = require('./routes/vendor');
-
-dotenv.load();
+;
 
 const app = express();
 app.use(logger('dev'));
@@ -25,11 +24,11 @@ app.use('/point', pointRoutes);
 app.use('/vendor', vendorRoutes);
 
 //connect the database
-DATABASE=process.env.DATABASE;
-mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://' + DATABASE, { useMongoClient: true });
+const DATABASE=process.env.DATABASE;
+//mongoose.Promise = require('bluebird');
+mongoose.connect('mongodb://'+ DATABASE);
 console.log("Database connected");
-console.log('mongodb://' + DATABASE);
+//console.log('mongodb://' + DATABASE);
 
 
 
