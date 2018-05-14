@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const point = require('../controllers/point');
+const point = require('../controller/point');
 
 //GET REQUESTS
 //All the point
 router.get('/all', point.listAllPoints);
 //By id
-router.get('/:pointId', point.listById);
+router.get('/:pointId', point.findById);
 
 //POST REQUESTS
 //New

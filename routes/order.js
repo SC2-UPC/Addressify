@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const order = require('../controllers/order');
+const order = require('../controller/order');
 
 //GET REQUESTS
 //All the orders
 router.get('/all', order.listAllOrders);
 //By id
-router.get('/:orderId', order.listById);
+router.get('/:orderId', order.findById);
 
 
 //POST REQUESTS
