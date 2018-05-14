@@ -1,28 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const order = require('../controllers/order');
+const vendor = require('../controller/vendor');
 
 //GET REQUESTS
 //All the point
-router.get('/all', point.listAllPoints);
+router.get('/all', vendor.listAllVendors);
 //By id
-router.get('/:pointId', point.listById);
+router.get('/:vendorId', vendor.findById);
 
 //POST REQUESTS
 //New
-router.post('/register', point.register);
+router.post('/register', vendor.register);
 //Login
-router.post('/login', point.login);
+router.post('/login', vendor.login);
 
 //UPDATE REQUESTS
 //Edit
-router.post('/:pointId', point.update);
+router.post('/:vendorId', vendor.update);
 
 
 //DELETE REQUESTS
 //By id
-router.delete('/:pointId', point.delete);
-
+router.delete('/:vendorId', vendor.delete);
+ 
 
 module.exports=router;
