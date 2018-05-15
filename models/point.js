@@ -8,7 +8,7 @@ var point= mongoose.Schema({
     address: {type: String},
     kpub: {type: String},
     kpriv: {type : String},
-    email: {type:String},
+    email: {type:String, unique : true},
     phone:{type:Number},
     password: {type:String}
 },{collection:'points'});
