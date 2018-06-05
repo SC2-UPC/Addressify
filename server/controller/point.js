@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const Point = mongoose.model('Point');
+const rsa = require ('rsa-cts2');
 
 exports.listAllPoints = function (req, res) {
-
-
-    Point.find({}, function (err, points) {
+   Point.find({}, function (err, points) {
         if (err)
             res.status(500).send({ message: `Internal server error: ${err}` });
         else
@@ -16,6 +15,17 @@ exports.findById = function (req, res) {
     const pointId = req.params.pointId;
 
     Point.find({ _id: pointId }, function (err, point) {
+        if (err)
+            res.status(500).send({ message: `Internal server error: ${err}` });
+        else
+            res.status(200).json(point);
+    });
+};
+
+exports.findByProvince = function (req, res) {
+    const province = req.params.province;
+
+    Point.find({ province: province }, function (err, point) {
         if (err)
             res.status(500).send({ message: `Internal server error: ${err}` });
         else
@@ -55,6 +65,10 @@ exports.login = function (req, res) {
 
 exports.register = function (req, res) {
     const newPoint = new Point(req.body);
+    const keys = rsa.getRSAKeys(512);
+    newPoint.kpub = keys.publicKey;
+    newPoint.kpriv = keys.privateKey;
+
     newPoint.save(function (err, point) {
         if (err) {
             if (err.code == 11000)

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Vendor = mongoose.model('Vendor');
+const rsa = require('rsa-cts2');
 
 exports.listAllVendors = function (req, res) {
 
@@ -27,7 +28,9 @@ exports.login = function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
 
-    Vendor.findOne({ email: email }, function (err, vendor) {
+    Vendor.findOne({ email: email })
+    .select({kpub:0})
+    .exec(function (err, vendor) {
         if (err) {
             res.status(500).send({ message: 'Internal server error' });
         } else {
@@ -54,7 +57,11 @@ exports.login = function (req, res) {
 };
 
 exports.register = function (req, res) {
-    const newVendor = new Vendor(req.body);
+    let newVendor = new Vendor(req.body);
+    const keys = rsa.getRSAKeys(512);
+    newVendor.kpub = keys.publicKey;
+    newVendor.kpriv = keys.privateKey;
+
     newVendor.save(function (err, vendor) {
         if (err) {
             if (err.code == 11000)
@@ -66,6 +73,7 @@ exports.register = function (req, res) {
             res.status(200).json(vendor);
         }
     });
+    //res.status(200).json(newVendor);
 };
 
 exports.update = function (req, res) {
