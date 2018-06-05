@@ -1,0 +1,31 @@
+{
+  "name": "rsa-cts-js",
+  "version": "1.0.1",
+  "description": "Module to implement RSA protocol.",
+  "main": "rsa.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mikelga22",
+  "license": "ISC",
+  "dependencies": {
+    "big-integer": "^1.6.28",
+    "buffer": "^5.1.0",
+    "crypto-js": "^3.1.9-1",
+    "process": "^0.11.10",
+    "randomfill": "^1.0.4",
+    "safe-buffer": "^5.1.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikelga22/rsa-cts-js.git"
+  },
+  "keywords": [
+    "rsa"
+  ],
+  "bugs": {
+    "url": "https://github.com/mikelga22/rsa-cts-js/issues"
+  },
+  "homepage": "https://github.com/mikelga22/rsa-cts-js#readme"
+}
