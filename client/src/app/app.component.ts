@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {QRCodeComponent} from 'angular2-qrcode';
 
 declare var require: any;
-const rsa = require('../../../../../RSA-js')
+const rsa = require('../../../RSA-js')
 
 @Component({
   selector: 'app-root',
