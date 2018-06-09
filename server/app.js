@@ -12,11 +12,16 @@ const vendorModel = require('./models/vendor');
 const pointRoutes = require('./routes/point');
 const orderRoutes = require('./routes/order');
 const vendorRoutes = require('./routes/vendor');
-;
 
 const app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 //Routes
 app.use('/order', orderRoutes);
