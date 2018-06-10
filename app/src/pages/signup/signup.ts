@@ -29,7 +29,12 @@ export class SignupPage {
       name: ['', [CustomValidators.rangeLength([4, 20]), Validators.required]],
       email: ['', [Validators.required, CustomValidators.email]],
       password: ['', [Validators.required, CustomValidators.rangeLength([6, 20])]],
-      password2: ['', [Validators.required, CustomValidators.rangeLength([6, 20])]]
+      password2: ['', [Validators.required, CustomValidators.rangeLength([6, 20])]],
+      province: '',
+      city: '',
+      postcode: '',
+      phone: '',
+      address: ''
     })
 
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
