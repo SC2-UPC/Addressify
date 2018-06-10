@@ -65,7 +65,7 @@ exports.login = function (req, res) {
 
 exports.register = function (req, res) {
     const newPoint = new Point(req.body);
-    const keys = rsa.getRSAKeys(512);
+    const keys = rsa.getRSAKeys();
     newPoint.kpub = keys.publicKey;
     newPoint.kpriv = keys.privateKey;
 
