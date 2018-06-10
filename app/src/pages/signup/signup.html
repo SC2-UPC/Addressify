@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar color="grey">
+    <ion-title>{{ 'Registrarse' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form [formGroup]="account" (submit)="doSignup(account.value)">
+    <ion-list>
+
+      <ion-item>
+        <ion-label fixed>{{ 'Nombre' | translate }}</ion-label>
+        <ion-input type="text" name="name" formControlName="name"></ion-input>
+
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>{{ 'Email' | translate }}</ion-label>
+        <ion-input type="email" name="email" formControlName="email"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label fixed>{{ 'Contraseña' | translate }}</ion-label>
+        <ion-input type="password" name="password" formControlName="password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>{{ 'Verificar Contraseña' | translate }}</ion-label>
+        <ion-input type="password" name="password2" formControlName="password2"></ion-input>
+      </ion-item>
+
+      <div padding>
+        <button ion-button color="grey2" type="submit" block outline>Registrarse</button>
+      </div>
+
+    </ion-list>
+  </form>
+</ion-content>
