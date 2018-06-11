@@ -1,0 +1,146 @@
+.main{
+    margin: 0 auto;
+    width: 1200px;
+    height: 100vh;
+}
+#navbar{
+    height: 100px;
+    
+}
+
+#logo{
+    margin-top: 20px;
+    width: 300px;
+}
+
+#body, #qrs{
+    /*background-color: red;*/
+    height: 80%;
+    max-width: 100%;
+}
+
+#steps{
+    margin: auto;
+    padding-top: 30px;
+    max-width: 80%;
+}
+
+#current-step{
+    padding-left:70px;
+}
+
+#steps .col{
+    font-size: 17px;
+    text-align: center;
+    background-color: aliceblue;
+    border: 1px solid white;
+}
+
+#previous, #current{
+    background-color: #3498db !important;
+    color: white;
+    border: 1px solid white;
+}
+
+#current-step{
+    margin:auto;
+    max-width: 100%;
+}
+
+#select-province{
+    max-width: 280px;
+}
+
+form{
+    padding-top:36px;
+    font-size: 18px;
+}
+
+.radio-option{
+    margin: 10px;
+}
+
+.next-button-div{
+    margin:0 auto;
+    padding-top:40px;
+    width:100%;
+    text-align: center;
+}
+
+#select-province{
+    margin-top:20px;
+}
+
+.btn{
+    width: 200px;
+    font-size: 22px;
+}
+
+#phone{
+    height: 130px;
+    padding-top:18px;
+   
+}
+
+#image-div{
+    border:1px solid silver;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+}
+
+#confirm-div{
+    margin:auto;
+    padding-left:70px;
+    padding-top: 40px;
+}
+
+#product-info{
+    padding-top:10px;
+    padding-left:10px;
+}
+
+#product-title{
+    padding-top:20px;
+}
+
+#product-details{
+    padding-left:20px;
+    font-size: 17px;
+}
+
+#price{
+    font-size: 21px;
+    padding-top:20px;
+
+}
+
+#shipping-info{
+    padding-top: 20px;
+    font-size:21px;
+}
+
+#qr-row{
+    margin:0 auto;
+    padding-top:40px;
+    text-align: center;
+}
+
+#qr-code{
+    padding-top:30px;
+}
+
+.loader {
+    margin: auto;
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

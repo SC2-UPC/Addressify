@@ -51,13 +51,8 @@ exports.newOrder = function (req, res) {
             const concat = array.join(',');
             const po = key.generateProof(concat)
 
-            let response = {};
-            response.IDA = ID;
-            response.IDP = idP;
-            response.IDO = idO;
-            response.C = c;
-            response.PO = po;
-            res.status(200).json(array);
+            let response = new Array(ID, idP, idO,c,po);
+            res.status(200).json({"response":response.join(',')});
         }
     });
 };
