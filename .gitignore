@@ -3,6 +3,7 @@
 
 #server node_modules
 server/node_modules
+fake-server/node_modules
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -55,3 +56,4 @@ fabric.properties
 
 # Editor-based Rest Client
 .idea/httpRequests
+
