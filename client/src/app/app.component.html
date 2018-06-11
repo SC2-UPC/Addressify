@@ -1,23 +1,94 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <div>
-    <qr-code [value]=this.d [size]="300"></qr-code>
-  </div>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<!--<qr-code [value]=this.d [size]="300"></qr-code>-->
+<div class="main">
+  <nav id="navbar">
+    <img src="../assets/logo2.png" id="logo">
+  </nav>
+  <ngx-spinner type="ball-clip-rotate" loadingText="Generando QR"></ngx-spinner>
+  <div id="body" *ngIf="!qrVendor">
+    <div class="row" id="steps">
+      <div class="col" id="previous">Pago</div>
+      <div class="col" id="current">Envío</div>
+      <div class="col" id="next">Confirmación</div>
+    </div>
+    <div id="current-step">
+      <div id="shipping" *ngIf="!showConfirm">
+        <form id="shipping-method-form">
+          <h4>Seleccionar método de envío</h4>
+          <input type="radio" class="radio-option" name="shipping" value="1"> DHL Express
+          <br>
+          <input type="radio" class="radio-option" name="shipping" value="1"> FedEx
+          <br>
+          <input type="radio" class="radio-option" name="shipping" value="3" checked> Nacex
+          <br>
+        </form>
+        <form id="delivery-option-form">
+          <h4>Seleccionar punto de entrega</h4>
+          <input type="radio" class="radio-option" name="delivery" value="1"> Dirección
+          <br>
+          <input type="radio" class="radio-option" name="delivery" value="1" checked> Punto addressify
+        </form>
+        <form id="select-province-form">
+          <h4>Seleccionar provincia</h4>
+          <select class="form-control" id="select-province" [(ngModel)]="selectedProvince" name="select" (change)="onChange($event)">
+            <option [value]="1" disabled>-- Provincia</option>
+            <option *ngFor="let province of provinces" [value]="province"> {{province}}</option>
+          </select>
+        </form>
+        <form id="select-point-form" *ngIf="points.length">
+          <h4>Escoger punto de recogida</h4>
+          <div *ngFor="let point of points">
+            <input type="radio" class="radio-option" name="point" value="1" (change)='onRadioChange(point)'>{{point.name}}, {{point.address}}, {{point.postCode}} {{point.city}}
+          </div>
+        </form>
+        <!--<div class="loader" *ngIf="loading"></div>-->
+        <div class="next-button-div">
+          <button id="next" [disabled]="!selectedPoint" class="btn btn-primary" (click)="next()">Siguiente</button>
+        </div>
+      </div>
 
+      <div id="confirm-div" *ngIf="showConfirm">
+        <h2>Resumen</h2>
+        <h4 id="product-title">Producto</h4>
+        <div class="row" id="product-info">
+          <div id="image-div">
+            <div class="col">
+              <img src="../assets/phone.png" id="phone">
+            </div>
+          </div>
+          <div id="product-details">
+            <b>Aifon S8</b>
+            <br> - Pantalla: 6"
+            <br> - Memoria: 64 GB
+            <br> - Cámara: 10 MP
+            <p id="price">
+              <b>899€</b>
+            </p>
+          </div>
+        </div>
+        <div id="shipping-info">
+          <h4>Información de envío</h4>
+          <p>Punto Addressify:</p>
+          - {{selectedPoint.name}}, {{selectedPoint.address}}, {{selectedPoint.city}}, {{selectedPoint.postCode}}
+        </div>
+        <div class="next-button-div">
+          <button id="next" [disabled]="!selectedPoint" class="btn btn-primary" (click)="confirm()">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="qrs" *ngIf="qrVendor">
+    <div class="row" id="qr-row">
+      <div class="col qr-col">
+        <h2>Vendedor</h2>
+        <div id="qr-code">
+          <qr-code [value]="this.qrVendor" [size]="300"></qr-code>
+        </div>
+      </div>
+      <div class="col qr-col">
+        <h2>Comprador</h2>
+        <div id="qr-code"><qr-code  [value]="this.qrBuyer" [size]="300"></qr-code></div>
+      </div>
+    </div>
+  </div>
+</div>
