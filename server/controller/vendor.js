@@ -58,7 +58,7 @@ exports.login = function (req, res) {
 
 exports.register = function (req, res) {
     let newVendor = new Vendor(req.body);
-    const keys = rsa.getRSAKeys(512);
+    const keys = rsa.getRSAKeys();
     newVendor.kpub = keys.publicKey;
     newVendor.kpriv = keys.privateKey;
 

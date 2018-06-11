@@ -1,0 +1,14 @@
+{
+  "name": "OpinaliaApp",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  },
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://localhost:3000"
+    }
+  ]
+}

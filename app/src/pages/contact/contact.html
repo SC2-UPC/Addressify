@@ -1,0 +1,48 @@
+<ion-header>
+
+  <ion-navbar color="grey">
+    <ion-title>Contacto</ion-title>
+
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span color="primary" showWhen="ios">
+          Cancelar
+        </span>
+        <ion-icon name="md-close" showWhen="android,windows,core"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form [formGroup]="contact" (submit)="send(contact.value)">
+    <ion-list>
+      <ion-item >
+        <ion-label fixed>{{ 'Email' | translate }}</ion-label>
+        <ion-input type="email"  name="email" formControlName="email" placeholder="{{u?.email}}"></ion-input>
+      </ion-item>
+
+      <ion-item >
+        <ion-label fixed>{{ 'Nombre' | translate }}</ion-label>
+        <ion-input type="text"  name="name" formControlName="name" placeholder="{{u?.name}}"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-textarea placeholder="Escribe tu mensaje..."
+                      rows="5" maxlength="500" name="comment" formControlName="message"></ion-textarea>
+      </ion-item>
+
+      <div padding>
+        <button ion-button type="submit" color="grey2" block outline>Enviar</button>
+      </div>
+    </ion-list>
+  </form>
+  <ion-card>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2998.5308186615434!2d1.9842996148251686!3d41.275550479274514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a482b2ea99ef25%3A0x53aec7154de459b3!2sUPC+Escola+d&#39;Enginyeria+de+Telecomunicaci%C3%B3+i+Aeroespacial+de+Castelldefels+(EETAC)!5e0!3m2!1sca!2ses!4v1515368215456" width="100%" height="315" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+  </ion-card>
+</ion-content>
