@@ -32,7 +32,7 @@ export class SignupPage {
       password2: ['', [Validators.required, CustomValidators.rangeLength([6, 20])]],
       province: '',
       city: '',
-      postcode: '',
+      postCode: '',
       phone: '',
       address: ''
     })
