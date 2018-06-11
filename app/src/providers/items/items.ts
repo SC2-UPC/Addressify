@@ -13,7 +13,7 @@ export class Items {
   }
 
   query() {
-    let seq =this.api.get('products/all')
+    let seq =this.api.get('point/all')
     return seq;
   }
   addreport(idproduct, idrating, newreport: any, token: any){
