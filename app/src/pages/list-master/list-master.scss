@@ -1,7 +1,21 @@
 page-list-master {
-  ion-avatar img{
-
-    border: 1px solid white;
-    background-color: white;
+  #image{
+    margin: auto;
+    padding-top:20px;
+    padding-bottom: 40px;
+    width:100%;
+    text-align:center;
   }
+
+  #image img{
+    width:150px;
+  }
+
+  button{
+    height: 70px !important;
+  }
+}
+
+ion-app.cameraView{
+  background: transparent none !important;
 }

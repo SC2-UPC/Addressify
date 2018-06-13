@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>OpinaliaApp</name>
+    <name>Addressify</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
@@ -78,8 +78,6 @@
     </platform>
     <allow-navigation href="http://10.192.230.128:8007" />
     <allow-navigation href="http://10.192.230.128:8100" />
-    <engine name="browser" spec="~5.0.3" />
-    <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-sqlite-storage" spec="^2.2.0" />
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
         <variable name="APP_ID" value="1817613605202343" />
@@ -90,4 +88,10 @@
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
+    <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <allow-navigation href="http://192.168.1.48:8100" />
+    <allow-navigation href="http://192.168.1.37:8100" />
+    <engine name="browser" spec="~5.0.3" />
+    <engine name="android" spec="6.3.0" />
 </widget>

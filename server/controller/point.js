@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Point = mongoose.model('Point');
 const rsa = require ('rsa-cts2');
 
+const k = (process.env.kPub).split(',')
+const kk = { "e": k[0], "n": k[1] }
+const publicA = rsa.publicKey(kk)
+
 exports.listAllPoints = function (req, res) {
    Point.find({}, function (err, points) {
         if (err)
@@ -51,7 +55,7 @@ exports.login = function (req, res) {
                     }
                 })*/
                 if (password == point.password) {
-                    res.status(200).send(point);
+                    res.status(200).send({point:point, IDA:process.env.ID, publicA:publicA});
 
                 } else {
                     res.status(401).send({ message: 'Incorrect credentials' });

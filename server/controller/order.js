@@ -58,19 +58,20 @@ exports.newOrder = function (req, res) {
 };
 
 exports.arrived = function (req, res) {
-    const order = req.body;
-    const idP = order.IDP;
-    const idO = order.IDO;
-    const c = order.C;
-    const po = order.PO;
+    const orderr = req.body;
+    const idO = orderr.IDO;
+    const c = orderr.C;
+    const IDP = orderr.IDP;
+    const po = orderr.PR;
 
-    Point.findById(idP)
+    Point.findById(IDP)
         .exec(function (err, point) {
             if (err)
                 res.status(500).send({ message: `Internal server error: ${err}` });
             else {
-                const kP = rsa.publicKey(point.kpub)
-                const array = new Array(ID, idP, c);
+                console.log(point.name);
+                const kP = rsa.publicKey(point.kpub);
+                const array = new Array(ID, IDP, c);
                 const concat = array.join(',');
                 const check = kP.checkProof(concat, po);
                 if (check) {
@@ -90,18 +91,18 @@ exports.arrived = function (req, res) {
 };
 
 exports.delivered = function (req, res) {
-    const order = req.body;
-    const idP = order.IDP;
-    const idO = order.IDO;
-    const c = order.C;
-    const pe = order.PE;
+    const orderr = req.body;
+    const idO = orderr.IDO;
+    const c = orderr.C;
+    const po = orderr.PE;
 
-    Order.findById(idO)
+    Order.findOne({ IdO: idO })
         .exec(function (err, order) {
             if (err)
                 res.status(500).send({ message: `Internal server error: ${err}` });
             else {
                 const kP = rsa.publicKey(order.kPub)
+                const idP = order.IdPoint;
                 const array = new Array(ID, idP, c);
                 const concat = array.join(',');
                 const check = kP.checkProof(concat, po);
@@ -120,31 +121,6 @@ exports.delivered = function (req, res) {
                     res.status(412).json({ message: 'Verification incorrect' });
             }
         });
-
-    /*Point.findById(idP)
-        .exec(function (err, point) {
-            if (err)
-                res.status(500).send({ message: `Internal server error: ${err}` });
-            else {
-                const kP = rsa.publicKey(point.kpub)
-                const array = new Array(ID, idP, c);
-                const concat = array.join(',');
-                const check = kP.checkProof(concat, po);
-                if (check) {
-                    Order.findOneAndUpdate({ IdO: idO }, { arrived: true }, { new: true })
-                        .exec(function (err, order) {
-                            if (err)
-                                res.status(500).send({ message: `Internal server error: ${err}` });
-                            else {
-                                res.status(200).json({ message: 'Order arrived', order: order });
-                            }
-                        })
-
-                }
-                else
-                    res.status(412).json({ message: 'Verification incorrect' });
-            }
-        });*/
 };
 
 exports.delete = function (req, res) {

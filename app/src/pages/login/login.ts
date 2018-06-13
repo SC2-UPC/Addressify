@@ -28,7 +28,7 @@ export class LoginPage {
     public user: User,
     public toastCtrl: ToastController,
     public translateService: TranslateService,
-    private storage:Storage) {
+    private storage: Storage) {
 
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
@@ -38,20 +38,24 @@ export class LoginPage {
   // Attempt to login in through our User service
   doLogin() {
     this.user.login(this.account).subscribe((resp) => {
-      let user:any;
-      user=resp;
+      let user: any;
+      console.log(resp)
+      user = resp;
       this.storage.set('user', user);
-      this.navCtrl.push(MainPage);
+      this.navCtrl.push(MainPage).then(() => {
+        const index = this.navCtrl.getActive().index;
+        this.navCtrl.remove(0, index);
+      });;
     }, (err) => {
       // Unable to log in
-      if(err.status==404) {
+      if (err.status == 404) {
         let toast = this.toastCtrl.create({
           message: "Usuario no existente",
           duration: 3000,
           position: 'top'
         });
         toast.present();
-      }else {
+      } else {
         // Unable to sign up
         let toast = this.toastCtrl.create({
           message: "Lo sentimos, no se ha podido iniciar sesión",
@@ -61,9 +65,5 @@ export class LoginPage {
         toast.present();
       }
     });
-  }
-
-  forgotPass(){
-     this.navCtrl.push(ForgotPasswordPage);
   }
 }

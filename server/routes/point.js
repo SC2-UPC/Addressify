@@ -8,6 +8,8 @@ const point = require('../controller/point');
 router.get('/all', point.listAllPoints);
 //By id
 router.get('/:pointId', point.findById);
+//find bt province
+router.get('/province/:province', point.findByProvince);
 
 //POST REQUESTS
 //New

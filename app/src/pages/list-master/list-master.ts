@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, ToastController } from 'ionic-angular';
 
-import { Item } from '../../models/item';
-import { Items } from '../../providers/providers';
-import {MainPage} from "../pages";
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Storage } from '@ionic/storage';
+import { User } from '../../providers/providers';
 import 'rxjs/add/operator/map';
+
+
+declare var require: any;
+const rsa = require('../../rsa-module/rsa');
+const crypto = require('crypto')
 
 @IonicPage()
 @Component({
@@ -13,19 +16,15 @@ import 'rxjs/add/operator/map';
   templateUrl: 'list-master.html'
 })
 export class ListMasterPage {
-  currentItems: any=[{}];
-  searchForm: FormGroup;
-  private results: any=[{}];
-  search: {filter: string, parameter: string}={
-    filter: 'all',
-    parameter:''
-  };
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController, private fb: FormBuilder) {
-    this.searchForm = fb.group({
-      'filter':'all',
-      'parameter':''
-    });
+  show = true;
+  kpriv;
+  pubA;
+  IDP;
+  IDA;
+
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public toastCtrl: ToastController, private storage: Storage, public user: User) {
+
 
   }
 
@@ -33,93 +32,174 @@ export class ListMasterPage {
    * The view loaded, let's query our items for the list
    */
   ionViewDidLoad() {
-    /*this.currentItems=this.items.query();
-    console.log("okj:")
-    console.log(this.currentItems)*/
-
-    let seq=this.items.query();
-
-    seq.subscribe((res: any) => {
-      this.currentItems=res;
-      this.results=this.currentItems;
-      if (res.status == 'success') {
-
-      } else {
-
-      }
-    }, err => {
-      console.error('ERROR', err);
+    this.storage.get('user').then((data) => {
+      this.kpriv = rsa.privateKey(data.point.kpriv);
+      this.pubA = rsa.publicKey(data.publicA)
+      this.IDP = data.point._id;
+      this.IDA = data.IDA;
     });
-
-
   }
 
-  /**
-   * Prompt the user to add a new item. This shows our ItemCreatePage in a
-   * modal and then adds the new item to our data source if the user created one.
-   */
-  addItem() {
-    let addModal = this.modalCtrl.create('ItemCreatePage');
-    addModal.onDidDismiss(item => {
-      if (item) {
-        this.items.add(item);
+  receive() {
+    let text;
+    let addModal = this.modalCtrl.create('ScannerPage');
+    this.showCamera();
+    addModal.onDidDismiss(data => {
+      this.show = true;
+      this.hideCamera();
+      if (data) {
+        text = data;
+        const splitted = text.split(',');
+        const IDO = splitted[2];
+        const c = splitted[3];
+        const po = splitted[4];
+        const array = new Array(this.IDA, this.IDP, c);
+        const concat = array.join(',');
+        const check = this.pubA.checkProof(concat, po);
+        if (check) {
+          const pr = this.kpriv.generateProof(concat);
+          const send = {
+            IDA: this.IDA,
+            IDP: this.IDP,
+            IDO: IDO,
+            C: c,
+            PR: pr
+          }
+
+          this.user.arrived(send).subscribe((resp) => {
+            let toast = this.toastCtrl.create({
+              message: "Paquete recibido!",
+              duration: 5000,
+              position: 'top'
+            });
+            toast.present();
+          }, (err) => {
+            // Unable to log in
+            if (err.status == 404) {
+              let toast = this.toastCtrl.create({
+                message: "Objeto no existente",
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+            } else if (err.status == 412) {
+              let toast = this.toastCtrl.create({
+                message: "Verificación incorrecta",
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+            }
+            else {
+              // Unable to sign up
+              let toast = this.toastCtrl.create({
+                message: "Lo sentimos, no se ha podido verificar",
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+            }
+          });
+
+        }
+        else {
+          let toast = this.toastCtrl.create({
+            message: "Verificación incorrecta",
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
       }
     })
+    this.show = false;
     addModal.present();
   }
 
-  private searchProduct(){
-    let filter=this.search.filter;
-    let param=this.search.parameter;
+  deliver() {
+    let text;
+    let addModal = this.modalCtrl.create('ScannerPage');
+    this.showCamera();
+    addModal.onDidDismiss(data => {
+      this.show = true;
+      this.hideCamera();
+      if (data) {
+        text = data;
+        const splitted = text.split(',');
+        const IDO = splitted[0];
+        console.log("Ido", IDO);
+        const c = splitted[1];
+        console.log(c);
+        const key = rsa.privateKey({ d: splitted[2], n: splitted[3] })
+        const d = key.decrypt(c);
+        console.log("d", d)
 
-    if(filter=="all")
-      this.showAll();
+        if (d == IDO) {
+          const array = new Array(this.IDA, this.IDP, c);
+          const concat = array.join(',');
+          const pe = key.generateProof(concat)
+          const send = {
+            IDA: this.IDA,
+            IDP: this.IDP,
+            IDO: IDO,
+            C: c,
+            PE: pe
+          }
+          this.user.delivered(send).subscribe((resp) => {
+            let toast = this.toastCtrl.create({
+              message: "Paquete entregado!",
+              duration: 5000,
+              position: 'top'
+            });
+            toast.present();
+          }, (err) => {
+            // Unable to log in
+            if (err.status == 404) {
+              let toast = this.toastCtrl.create({
+                message: "Objeto no existente",
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+            } else if (err.status == 412) {
+              let toast = this.toastCtrl.create({
+                message: "Verificación incorrecta",
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+            }
+            else {
+              // Unable to sign up
+              let toast = this.toastCtrl.create({
+                message: "Lo sentimos, no se ha podido verificar",
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+            }
+          });
+        }
+        else {
+          let toast = this.toastCtrl.create({
+            message: "Verificación incorrecta",
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
 
-    else if(filter=='name'){
-      this.searchByname(param);
-    }
-    else if(filter=="order"){
-      this.order();
-    }
-    else if(filter=="company"){
-      this.searchBycompany(param);
-    }
-    else if(filter=="category"){
-      this.searchBycategory(param);
-    }
+      }
+    })
+    this.show = false;
+    addModal.present();
   }
 
-  private showAll(){
-    this.results=this.currentItems;
+  showCamera() {
+    (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
   }
 
-  private searchByname(name){
-    this.results=this.currentItems.filter(x=>x.name==name);
-
-  }
-
-  private searchBycompany(company){
-    this.results=this.currentItems.filter(x=>x.company==company);
-  }
-  private searchBycategory(category){
-    this.results=this.currentItems.filter(x=>x.category==category);
-  }
-  private order(){
-    this.results=this.currentItems.sort(function(a,b){return a.name>b.name});
-  }
-  /**
-   * Delete an item from the list of items.
-   */
-  deleteItem(item) {
-    this.items.delete(item);
-  }
-
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(item: Item) {
-    this.navCtrl.push('ItemDetailPage', {
-      item: item
-    });
+  hideCamera() {
+    (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
   }
 }

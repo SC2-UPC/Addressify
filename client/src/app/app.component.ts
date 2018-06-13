@@ -27,10 +27,12 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    console.log(rsa.getRSAKeys(128))
   }
 
   onChange($event) {
-    this.http.get(`http://localhost:3000/point/all`)
+    console.log(this.selectedProvince);
+    this.http.get(`http://localhost:3000/point/province/`+ this.selectedProvince)
       //.map((res: Response) => res.json())
       .subscribe(data => {
         this.points = JSON.parse(data['_body']);
@@ -66,10 +68,10 @@ export class AppComponent {
           //.map((res: Response) => res.json())
           .subscribe(data => {
             const resp=JSON.parse(data['_body']).response;
-            console.log(resp);
-            console.log(keys.privateKey)
             this.qrVendor=String(resp);
-            const array = new Array(keys.privateKey.e, keys.privateKey.n);
+            const c = resp.split(',')[3]
+            console.log(c);
+            const array = new Array(id, c, keys.privateKey.d, keys.privateKey.n);
             this.qrBuyer=array.join(',');
             this.spinner.hide();
           });

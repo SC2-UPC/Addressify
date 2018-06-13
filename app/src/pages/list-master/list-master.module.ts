@@ -4,6 +4,7 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { ListMasterPage } from './list-master';
 
+
 @NgModule({
   declarations: [
     ListMasterPage,

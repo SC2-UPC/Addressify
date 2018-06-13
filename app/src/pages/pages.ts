@@ -5,6 +5,8 @@ export const FirstRunPage = 'WelcomePage';
 // Change this if not using tabs
 export const MainPage = 'TabsPage';
 
+export const ScannerPage ='ScannerPage';
+
 //Forgot password page
 export const ForgotPasswordPage='ForgotPasswordPage'
 
